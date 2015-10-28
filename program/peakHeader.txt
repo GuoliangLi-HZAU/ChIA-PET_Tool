@@ -1,0 +1,1 @@
+peak location	Self-ligation counts 	p-value from self-ligations 	FDR	intra_pets 	inter_pets 	sum of (intra_pets and inter_pets)
