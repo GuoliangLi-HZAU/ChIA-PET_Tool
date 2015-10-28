@@ -49,7 +49,7 @@ The current ChIA-PET Tool is a command-line program whose execution requires a t
 
 > deletion.sh   &nbsp;&nbsp;&nbsp;// delete some temperary files and move files for generating visualization report to a new folder
 
-#### If you need to modify the source codes, using the following commands to pack the files. (change your working directory to: ChIA-PET_Tool/program/LGL/src/)
+#### If you need to modify the source codes, using the following commands to pack the files. (change your working directory to: ChIA-PET_Tool-master/program/LGL/src/)
 ```shell
 mkdir ../classes
 javac -d ../classes @path.txt
