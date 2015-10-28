@@ -198,8 +198,8 @@ cp -Rf ${PROGRAM_DIRECTORY}/ChIA-PET_Tool_Report ${OUTPUT_DIRECTORY}/files_for_r
 cp ${PROGRAM_DIRECTORY}/Rscript_and_genome_data/${CYTOBAND_DATA} ${OUTPUT_DIRECTORY}/files_for_report/${CYTOBAND_DATA}
 Rscript --verbose ${PROGRAM_DIRECTORY}/Rscript_and_genome_data/ChIA-PET_Tool_Report.r ${PROGRAM_DIRECTORY} ${OUTPUT_DIRECTORY}/files_for_report ${OUTPUT_PREFIX} ${CYTOBAND_DATA} ${SPECIES}
 
-if [ -d ${OUTPUT_DIRECTORY}/ChIA-PET_Tool_Report ];then
-    rm -rf ${OUTPUT_DIRECTORY}/ChIA-PET_Tool_Report
+if [ -d ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.ChIA-PET_Tool_Report ];then
+	    rm -rf ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.ChIA-PET_Tool_Report
 fi
 
 mv ${OUTPUT_DIRECTORY}/files_for_report/ChIA-PET_Tool_Report/ ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.ChIA-PET_Tool_Report
