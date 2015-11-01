@@ -13,10 +13,10 @@ GENOME_LENGTH='3E9'  ### human
 GENOME_COVERAGE_RATIO='0.8' ### the proportion of the genome covered by the reads
 GENOME_INDEX='/home/data/genome/hg19.genome.fa'
 
-BWA='/root/Downloads/bwa-0.7.10/bwa'
+BWA='/home/local/bwa-0.7.7/bwa'
 NTHREADS='6' ### number of threads used in mapping reads to a reference genome
-SAMTOOLS='/usr/local/bin/samtools'
-BAM2BEDPE='/root/software/bedtools-2.17.0/bin/bamToBed -bedpe'
+SAMTOOLS='/home/local/samtools-0.1.19/samtools'
+BAM2BEDPE='/home/local/bedtools-2.17.0/bin/bamToBed -bedpe'
 
 MAPPING_CUTOFF='20' ### cutoff of mapping quality score for filtering out low-quality or multiply-mapped reads
 
