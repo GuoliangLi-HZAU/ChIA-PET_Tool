@@ -183,12 +183,12 @@ awk '{printf $0"\t"}' ${OUTPUT_DIRECTORY}/time.txt |awk '{printf "Linker filteri
 rm ${OUTPUT_DIRECTORY}/time.txt
 
 ## summary
-sed -n '2p' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.linker_composition_distribution.txt | awk '{print "same-linker PETs/Total PETs\t"($1+$4)/$6}' > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
-awk -F"\t" '{printf $2"\t"}' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.basic_statistics.txt | awk '{print "PETs after removing redundancy/Total PETs\t"$5/$1"\ninter-ligation PETs/PETs after removing redundancy\t"$7/$5}' >>  ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
+sed -n '2p' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.linker_composition_distribution.txt | awk '{print "(same-linker PETs)/(Total PETs)\t"($1+$4)/$6}' > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
+awk -F"\t" '{printf $2"\t"}' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.basic_statistics.txt | awk '{print "(PETs after removing redundancy)/(Total PETs)\t"$5/$1"\n(inter-ligation PETs)/(PETs after removing redundancy)\t"$7/$5}' >>  ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
 awk '{if($8==1){print}}' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.cluster.FDRfiltered.txt | wc -l | awk '{printf $1"\t"}' >>${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
 awk '{if($8==1 && $9<1000000){print}}' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.cluster.FDRfiltered.txt | wc -l | awk '{printf $1"\t"}' >>${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
 wc -l ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.cluster.FDRfiltered.txt | awk '{print $1}' >> ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt 
-sed -n '4p' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt |awk '{print "intra-chromosomal inter-ligation PETs/inter-ligation PETs\t"$1/$3"\nintra-chromosomal inter-ligation PETs within 1Mb/intra-chromosomal inter-ligation PETs\t"$2/$3}' >> ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
+sed -n '4p' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt |awk '{print "(intra-chromosomal inter-ligation PETs)/(inter-ligation PETs)\t"$1/$3"\n(intra-chromosomal inter-ligation PETs within 1Mb)/(intra-chromosomal inter-ligation PETs)\t"$2/$3}' >> ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
 sed -i '4d' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.summary.txt
 
 sh ${PROGRAM_DIRECTORY}/../deletion.sh ${OUTPUT_DIRECTORY} ${OUTPUT_PREFIX} ${PROGRAM_DIRECTORY}
