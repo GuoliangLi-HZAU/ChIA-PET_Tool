@@ -55,7 +55,7 @@ public class PetClusterWithGivenAnchors {
         anchors = loadAnchors(anchorRegionFile);
         // output file
         this.prefix = prefix;
-        String clusterFileName = new String(prefix + ".cluster.txt");
+        String clusterFileName = new String(prefix);
         PrintWriter clusterFileOut = new PrintWriter(new BufferedWriter(new FileWriter(clusterFileName)));
 
         // load inter-ligation PETs
