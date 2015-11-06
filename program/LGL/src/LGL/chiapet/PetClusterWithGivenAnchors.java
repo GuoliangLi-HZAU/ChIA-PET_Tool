@@ -42,11 +42,11 @@ public class PetClusterWithGivenAnchors {
     // With sorted PETs, it is easier to merge the PETs
     Vector<ANCHOR> anchors = new Vector<ANCHOR>();
     Vector anchorClusters = new Vector<AnchorCluster>();
-    String prefix = null;
+    String fileOut = null;
     int sortingLabel = 0;
     Vector<CLUSTER> clusters = new Vector<CLUSTER>();
 
-    public PetClusterWithGivenAnchors(String preclusterFile, String anchorRegionFile, String prefix, int sortingLabel) throws IOException {
+    public PetClusterWithGivenAnchors(String preclusterFile, String anchorRegionFile, String outputFile, int sortingLabel) throws IOException {
         rightNow = Calendar.getInstance();
         System.out.println("[" + rightNow.getTime().toString() + "] start PetClusterWithGivenAnchors ... ");
 
@@ -54,8 +54,8 @@ public class PetClusterWithGivenAnchors {
         // load anchors
         anchors = loadAnchors(anchorRegionFile);
         // output file
-        this.prefix = prefix;
-        String clusterFileName = new String(prefix);
+        this.fileOut = outputFile;
+        String clusterFileName = new String(outputFile);
         PrintWriter clusterFileOut = new PrintWriter(new BufferedWriter(new FileWriter(clusterFileName)));
 
         // load inter-ligation PETs
@@ -73,7 +73,7 @@ public class PetClusterWithGivenAnchors {
             REGION head = new REGION(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]));
             REGION tail = new REGION(fields[3], Integer.parseInt(fields[4]), Integer.parseInt(fields[5]));
             double weight = 1.0;
-            if (fields.length >= 7) {
+            if(fields.length >= 7) {
                 weight = Double.parseDouble(fields[6]);
             }
             CLUSTER cluster = new CLUSTER(head, tail, weight, this.sortingLabel);
@@ -97,19 +97,21 @@ public class PetClusterWithGivenAnchors {
         outputClusters(clusterFileOut);
     }
 
-    Vector<ANCHOR> loadAnchors(String regionFile) throws IOException {
+    Vector<ANCHOR> loadAnchors(String regionFile)  throws IOException {
         Vector<ANCHOR> anchorsTmp = new Vector<ANCHOR>();
         Vector<REGION> regions = REGION.load(regionFile);
 
-        for (int i = 0; i < regions.size(); i++) {
+        for(int i = 0; i < regions.size(); i++) {
             ANCHOR anchor = new ANCHOR(regions.get(i));
             anchorsTmp.add(anchor);
         }
 
         Collections.sort(anchorsTmp);
-
+        
         return anchorsTmp;
     }
+
+
 
     public void outputClusters(PrintWriter clusterFileOut) throws IOException {
         for (int i = 0; i < anchorClusters.size(); i++) {
@@ -170,6 +172,7 @@ public class PetClusterWithGivenAnchors {
         return tempAnchorClusters;
     }
 
+
     // find the anchor overlapped with the current region
     ANCHOR searchAnchor(Vector anchors, ANCHOR anchor) {
         int index = Collections.binarySearch(anchors, anchor);
@@ -204,7 +207,7 @@ public class PetClusterWithGivenAnchors {
         if (args.length == 4) {
             new PetClusterWithGivenAnchors(args[0], args[1], args[2], Integer.valueOf(args[3]));
         } else {
-            System.out.println("Usage: java PetClusterWithGivenAnchors <preclusterFile> <given_anchor_file> <prefix> <sortingLabel>");
+            System.out.println("Usage: java PetClusterWithGivenAnchors <preclusterFile> <given_anchor_file> <outputFile> <sortingLabel>");
             System.out.println("  sortingLabel:  1 - sort the head and tail anchors in ascending order");
             System.out.println("                -1 - sort the head and tail anchors in ascending order");
             System.out.println("         otherwise - no sort (default)");
@@ -212,3 +215,4 @@ public class PetClusterWithGivenAnchors {
         }
     }
 }
+
