@@ -1,6 +1,7 @@
 LGL/align/LocalAlignment.java
 LGL/chiapet/BindingSitesFromPETs.java
 LGL/chiapet/LinkerFiltering_FastQ_PET.java
+LGL/chiapet/LinkerFiltering_FastQ_singleEnd.java
 LGL/chiapet/MergeSimilarPETs2.java
 LGL/chiapet/PetClassification.java
 LGL/chiapet/PetCluster2.java

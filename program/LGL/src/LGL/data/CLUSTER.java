@@ -71,7 +71,7 @@ public class CLUSTER implements Comparable {
                 if (pet.getHead().getLoci() - extensionLength >= 0) {
                     head = new REGION(pet.getHead().getChrom(), pet.getHead().getLoci() - extensionLength, pet.getHead().getLoci());
                 } else {
-                    head = new REGION(pet.getHead().getChrom(), 1, pet.getHead().getLoci());
+                    head = new REGION(pet.getHead().getChrom(), 0, pet.getHead().getLoci());
                 }
             } else {
                 if (pet.getHead().getLoci() + extensionLength < chromLength.get(pet.getHead().getChrom())) {
@@ -86,7 +86,7 @@ public class CLUSTER implements Comparable {
                 if (pet.getTail().getLoci() - extensionLength >= 0) {
                     tail = new REGION(pet.getTail().getChrom(), pet.getTail().getLoci() - extensionLength, pet.getTail().getLoci());
                 } else {
-                    tail = new REGION(pet.getTail().getChrom(), 1, pet.getTail().getLoci());
+                    tail = new REGION(pet.getTail().getChrom(), 0, pet.getTail().getLoci());
                 }
             } else {
 
