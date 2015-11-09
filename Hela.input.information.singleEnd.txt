@@ -1,0 +1,8 @@
+Fastq_file	/data1/GLLi/hdchang/single-end/SRR1593525.fastq
+linker_file	linker_set_2.with-barcode-info.txt
+minimum_linker_alignment_score	14
+minimum_tag_length	18
+maximum_length_tag1	21
+maximum_length_tag2	21
+minSecondBestScoreDiff	3
+output_data_with_ambiguous_linker_info	1
