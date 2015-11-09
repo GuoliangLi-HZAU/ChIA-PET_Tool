@@ -3,7 +3,7 @@ INPUT_INFO_FILE='Hela.input.information.singleEnd.txt'
 #INPUT_ANCHOR_FILE='/home/data/givenAnchor.cluster.txt' ### The path and file name of given anchors' clusters. If you don't have this file, please input 'null'. 
 INPUT_ANCHOR_FILE='null'
 OUTPUT_DIRECTORY='/data1/GLLi/hdchang/single-end/results'
-OUTPUT_PREFIX='Hela_B2'
+OUTPUT_PREFIX='Hela'
 
 SPECIES='1' ##1:human ; 2:mouse
 CYTOBAND_DATA='hg19_cytoBandIdeo.txt'
