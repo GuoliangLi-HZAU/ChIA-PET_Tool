@@ -81,7 +81,7 @@ ChIA-PET Tool is an easy-to-use pipeline and you can simply run it with one comm
 ```shell
 sh run.MCF7.sh
 ```
-**Before you run the pipeline, you need to modify the variables in the shell scripts, especially for the required tools.** The details of parameters and their meanings can be found in ***user_manual.pdf***. There are different output files from ChIA-PET Tool. The format of the result files and the interpretations of the results are in ***Outputs.docx***, and the running information and summary statistics are shown in ***ChIA-PET_Tool_Report*** generated with ChIA-PET Tool.
+**Before you run the pipeline, you need to modify the variables in the shell scripts, especially for the required tools.** The details of parameters and their meanings can be found in ***user_manual.pdf***. There are different output files from ChIA-PET Tool. The format of the result files and the interpretations of the results are in ***output_illustration.pdf***, and the running information and summary statistics are shown in ***ChIA-PET_Tool_Report*** generated with ChIA-PET Tool.
 
 ## References
 
