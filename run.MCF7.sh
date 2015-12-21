@@ -13,9 +13,9 @@ GENOME_LENGTH='3E9'  ### human
 GENOME_COVERAGE_RATIO='0.8' ### the proportion of the genome covered by the reads
 GENOME_INDEX='/home/data/genome/hg19.genome.fa'
 
-BWA='/home/local/bwa-0.7.7/bwa'
+BWA='/home/local/bwa-0.7.10-r789/bwa'
 NTHREADS='6' ### number of threads used in mapping reads to a reference genome
-SAMTOOLS='/home/local/samtools-0.1.19/samtools'
+SAMTOOLS='/home/local/samtools-1.1/samtools'
 BAM2BEDPE='/home/local/bedtools-2.17.0/bin/bamToBed -bedpe'
 
 MAPPING_CUTOFF='20' ### cutoff of mapping quality score for filtering out low-quality or multiply-mapped reads
@@ -95,7 +95,7 @@ date '+%s' >> ${OUTPUT_DIRECTORY}/time.txt
 java -cp ${PROGRAM_DIRECTORY}/LGL.jar LGL.chiapet.PetClassification ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.bedpe.selected.pet.txt  ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.ipet ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.spet ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.opet ${SELF_LIGATION_CUFOFF}
 wc -l ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.spet | sed 's/ /\t/g' | awk '{print "Self-ligation PETs\t"$1}' >> ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.basic_statistics.txt
 wc -l ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.ipet | sed 's/ /\t/g' | awk '{print "Inter-ligation PETs\t"$1}' >> ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.basic_statistics.txt
-wc -l ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.opet | sed 's/ /\t/g' | awk '{print "Other PETs\t"$1}' >> ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.basic_statistics.txt
+wc -l ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.opet | sed 's/ /\t/g' | awk '{print "Other PETs with short distance\t"$1}' >> ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.basic_statistics.txt
 date '+%s' >> ${OUTPUT_DIRECTORY}/time.txt
 
 ####### interaction calling
@@ -139,8 +139,8 @@ java -cp ${PROGRAM_DIRECTORY}/LGL.jar LGL.chiapet.BindingSitesFromPETs  ${OUTPUT
 
 ###### p-value calculation for peaks
 # generate local tag counts for local density
-awk '{center=int(($2+$3)/2); print $1"\t"$2"\t"$3"\t"center-5000"\t"center+5000"\t"$6}'   < ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak | awk '{if($4 < 0){a=0}else{a=$4};if($2<0){b=0}else{b=$2}{print $1"\t"b"\t"$3"\t"a"\t"$5"\t"$6}}' > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.5K_5K.temp
-awk '{center=int(($2+$3)/2); print $1"\t"$2"\t"$3"\t"center-10000"\t"center+10000"\t"$6}' < ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak | awk '{if($4 < 0){a=0}else{a=$4};if($2<0){b=0}else{b=$2}{print $1"\t"b"\t"$3"\t"a"\t"$5"\t"$6}}' > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.10K_10K.temp
+awk '{center=int(($2+$3)/2); print $1"\t"$2"\t"$3"\t"center-5000"\t"center+5000"\t"$6}'   < ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak | awk '{if($4 <= 0){a=1}else{a=$4};if($2<0){b=1}else{b=$2}{print $1"\t"b"\t"$3"\t"a"\t"$5"\t"$6}}' > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.5K_5K.temp
+awk '{center=int(($2+$3)/2); print $1"\t"$2"\t"$3"\t"center-10000"\t"center+10000"\t"$6}' < ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak | awk '{if($4 <= 0){a=1}else{a=$4};if($2<0){b=1}else{b=$2}{print $1"\t"b"\t"$3"\t"a"\t"$5"\t"$6}}' > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.10K_10K.temp
 awk '{if(ARGIND==1){a[$1]=$2}else{b=a[$1];if($5>b){c=b}else{c=$5};if($3>b){d=b}else{d=$3}{print $1"\t"$4"\t"c"\t"$2"\t"d"\t"$6}}}' ${PROGRAM_DIRECTORY}/${CHROM_SIZE_INFO} ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.5K_5K.temp > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.5K_5K
 awk '{if(ARGIND==1){a[$1]=$2}else{b=a[$1];if($5>b){c=b}else{c=$5};if($3>b){d=b}else{d=$3}{print $1"\t"$4"\t"c"\t"$2"\t"d"\t"$6}}}' ${PROGRAM_DIRECTORY}/${CHROM_SIZE_INFO} ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.10K_10K.temp > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.10K_10K
 rm ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.5K_5K.temp
@@ -206,5 +206,5 @@ mv ${OUTPUT_DIRECTORY}/files_for_report/ChIA-PET_Tool_Report/ ${OUTPUT_DIRECTORY
 
 # Genomic Browser
 ## UCSC
-awk -v OUTPUT_PREFIX=${OUTPUT_PREFIX} 'BEGIN{print "browser position chr1:9997500-10922500\nbrowser hide all\ntrack name=ChIAPET description=\"ChIA-PET "OUTPUT_PREFIX" human\""}$1==$4{print $1"\tChIAPET\t"OUTPUT_PREFIX"\t"$2"\t"$3"\t.\t.\t.\ttouch"NR"\n"$4"\tChIAPET\t"OUTPUT_PREFIX"\t"$5"\t"$6"\t.\t.\t.\ttouch"NR}' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.cluster.FDRfiltered.txt > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.cluster.toUCSC.gff
+awk -v OUTPUT_PREFIX=${OUTPUT_PREFIX} 'BEGIN{print "browser position chr1:9997500-10922500\nbrowser hide all\ntrack name=ChIAPET description=\"ChIA-PET "OUTPUT_PREFIX" \""}$1==$4{print $1"\tChIAPET\t"OUTPUT_PREFIX"\t"$2"\t"$3"\t.\t.\t.\ttouch"NR"\n"$4"\tChIAPET\t"OUTPUT_PREFIX"\t"$5"\t"$6"\t.\t.\t.\ttouch"NR}' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.cluster.FDRfiltered.txt > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.cluster.toUCSC.gff
 awk -v OUTPUT_PREFIX=${OUTPUT_PREFIX} 'BEGIN{print "browser position chr17:73626165-73912870\nbrowser hide all\nbrowser pack refGene encodeRegions\nbrowser full altGraph\n#300 base wide bar graph, autoScale is on by default == graphing\n#limits will dynamically change to always show full range of data\n#in viewing window, priority = 20 positions this as the second graph\n#Note, zero-relative, half-open coordinate system in use for bedGraph format\ntrack type=bedGraph name=\""OUTPUT_PREFIX" ChIAPET peak\" description=\""OUTPUT_PREFIX" ChIA-PET peaks\" visibility=full color=32,178,170 altColor=0,255,127 priority=20"}{print $1"\t"$2"\t"$3"\t"$4}' ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.FDRfiltered.txt > ${OUTPUT_DIRECTORY}/${OUTPUT_PREFIX}.peak.toUCSC.bedGraph 
